@@ -1,0 +1,90 @@
+function Run-NetworkDiagnosis {
+# defining targeted websites to diagnose and the router's IP and the ports
+$log = "$PSScriptRoot/Network-Diagnosis_logs.txt"
+$router = "192.168.1.1"
+$targets = $router, "google.com", "youtube.com", "discord.com"
+
+$ports = 80, 443, 22
+# printing a friendly message to check the DNS
+Write-Host "=== DNS CHECK ==="
+# looping through the targeted websites
+foreach ($target in $targets) {
+# error handling in case it fails
+try {
+Resolve-DnsName $target -ErrorAction Stop | Out-Null
+Write-Host "$target DNS OK"
+}
+catch {
+Write-Host "ERROR: DNS failed for $target"
+Write-Error "fix:
+1. Check WiFi/Ethernet is connected
+2. Restart router"
+Add-Content -Path $log -Value "ERROR: DNS failed for $target
+fix:
+1. Check WiFi/Ethernet is connected
+2. Restart router`n"
+}
+}
+# printing a friendly message of the start of the ping checking
+Write-Host "`n=== PING CHECK ==="
+# looping through targeted websites and router
+foreach ($target in $targets) {
+$ping = Test-Connection $target -Count 2 -ErrorAction SilentlyContinue
+
+if ($ping) {
+$avg = ($ping | Measure-Object -Property ResponseTime -Average).Average
+$avg = [math]::Round($avg)
+
+Write-Host "$target average ping: $avg ms"
+# conditional statements are added to see if the condition is true and the ping is slow
+if ($avg -ge 50) {
+Write-Host "WARNING: $target is slow"
+Write-Error "Check router internet light
+Move closer to router/use Ethernet
+Restart router"
+Add-Content -Path $log -Value "WARNING: $target is slow
+1. Check router internet light
+2. Move closer to router/use Ethernet
+3. Restart router"
+}
+}
+else {
+Write-Host "ERROR: $target not reachable"
+}
+}
+# printing a friendly message of the start of the ports check
+Write-Host "`n=== PORT CHECK (ROUTER ONLY) ==="
+# looping through ports
+foreach ($port in $ports) {
+# defining results to know the results of the check
+$result = Test-NetConnection -ComputerName $router -Port $port -WarningAction SilentlyContinue
+# conditional statements are added to know if the results are available
+if ($result.TcpTestSucceeded) {
+Write-Host "Router port $port OPEN"
+}
+else {
+Write-Host "Router port $port CLOSED"
+Write-Error "fix:
+1. Try opening in browser:
+http://192.168.1.1
+https://192.168.1.1
+If it doesn’t open:
+2. make sure you're on the same WiFi network
+restart router
+check correct IP (run ipconfig → Default Gateway)
+If still failing:
+3. router may disable remote/admin access (normal in some setups)"
+Add-Content -Path $log -Value "Router port $port CLOSED
+fix:
+1. Try opening in browser:
+http://192.168.1.1
+https://192.168.1.1
+If it doesn’t open:
+2. make sure you're on the same WiFi network
+restart router
+check correct IP (run ipconfig → Default Gateway)
+If still failing:
+3. router may disable remote/admin access (normal in some setups)"
+}
+}
+}
