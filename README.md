@@ -1,10 +1,10 @@
-# ⚡ Run-NetworkDiagnosis
+#  Run-NetworkDiagnosis
 
 PowerShell network troubleshooting and connectivity diagnostic tool built to automate common IT and sysadmin checks.
 
 ---
 
-## 🔍 Features
+##  Features
 
 - DNS resolution testing
 - Ping & latency diagnostics
@@ -16,7 +16,7 @@ PowerShell network troubleshooting and connectivity diagnostic tool built to aut
 
 ---
 
-## 🌐 Diagnostics Included
+##  Diagnostics Included
 
 | Check | Purpose |
 |---|---|
@@ -27,7 +27,7 @@ PowerShell network troubleshooting and connectivity diagnostic tool built to aut
 
 ---
 
-## 🔌 Ports Tested
+##  Ports Tested
 
 - **80** → HTTP
 - **443** → HTTPS
@@ -35,7 +35,7 @@ PowerShell network troubleshooting and connectivity diagnostic tool built to aut
 
 ---
 
-## 🖥 Usage
+##  Usage
 
 ```powershell
 Run-NetworkDiagnosis
@@ -49,7 +49,7 @@ or
 
 ---
 
-## 📄 Example Output
+##  Example Output
 
 ```text
 === DNS CHECK ===
@@ -66,7 +66,7 @@ Router port 22 CLOSED
 
 ---
 
-## 📁 Log File
+##  Log File
 
 ```text
 Network-Diagnosis_logs.txt
@@ -80,7 +80,7 @@ Stores:
 
 ---
 
-## 🛠 Skills Demonstrated
+##  Skills Demonstrated
 
 - PowerShell scripting
 - Network troubleshooting
@@ -91,7 +91,7 @@ Stores:
 
 ---
 
-## 🚀 Future Improvements
+##  Future Improvements
 
 - CSV / JSON export
 - Parallel diagnostics
@@ -101,6 +101,6 @@ Stores:
 
 ---
 
-## 👨‍💻 Purpose
+##   Purpose
 
 Created as a self-taught networking and system administration project focused on automating real-world troubleshooting tasks using PowerShell.
